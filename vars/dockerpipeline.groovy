@@ -71,7 +71,11 @@ def call(Map pipelineParams){
                 }
             }
             steps{
-                docker.buildApp("${env.APPLICATION_NAME}")
+                script{
+                    docker.buildApp("${env.APPLICATION_NAME}")
+
+                }
+                
                 //echo "Build the ${env.APPLICATION_NAME} application"
                 //sh 'mvn clean package -Dskiptests=true'
 

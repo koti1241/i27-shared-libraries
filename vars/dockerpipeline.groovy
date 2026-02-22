@@ -54,6 +54,15 @@ def call(Map pipelineParams){
     }
     environment{
         APPLICATION_NAME = "${pipelineParams.appName}"
+        //Application port
+        DEV_HOST_PORT= "${pipelineParams.devHostPort}"
+        TST_HOST_PORT= "${pipelineParams.tstHostPort}"
+        STG_HOST_PORT="${pipelineParams.stgHostPort}"
+        PRD_HOST_PORT="${pipelineParams.prdHostPort}"
+
+        //Container port
+        CONTAINER_PORT= "${pipelineParams.conHostPort}"
+
         POM_VERSION = readMavenPom().getVersion()
         POM_PACKAGING = readMavenPom().getPackaging()
         DOCKER_HUB = "docker.io/koti3355"
@@ -199,7 +208,9 @@ def call(Map pipelineParams){
                 script{
                     imageValidation().call()
 
-                    dockerDeploy('dev', '8761', '8761').call()
+                    //dockerDeploy('dev', '8761', '8761').call()
+                    dockerDeploy('dev', "${pipelineParams.devHostPort}", "${pipelineParams.conHostPort}").call()
+                    
                 }
             }
         }
@@ -216,7 +227,8 @@ def call(Map pipelineParams){
                 script{
 
                    imageValidation().call()
-                   dockerDeploy('tst', '9761', '8761').call()
+                   //dockerDeploy('tst', '9761', '8761').call()
+                    dockerDeploy('tst', "${pipelineParams.devHostPort}", "${pipelineParams.conHostPort}").call()
                 }
             }
         }
@@ -239,7 +251,8 @@ def call(Map pipelineParams){
                 script{
                     imageValidation().call()
 
-                    dockerDeploy('stg', '7761', '8761').call()
+                    //dockerDeploy('stg', '7761', '8761').call()
+                     dockerDeploy('stg', "${pipelineParams.devHostPort}", "${pipelineParams.conHostPort}").call()
                 }
             }
         }
@@ -265,7 +278,8 @@ def call(Map pipelineParams){
                 }
                 script{
 
-                    dockerDeploy('prd', '6671', '8761').call()
+                    //dockerDeploy('prd', '6671', '8761').call()
+                     dockerDeploy('prd', "${pipelineParams.devHostPort}", "${pipelineParams.conHostPort}").call()
                 }
                 /*echo "*********deploying to dev environment**************"
                 withCredentials([usernamePassword(credentialsId: 'docker_vm', passwordVariable: 'PASSWORD', usernameVariable: 'USER_NAME')]) {

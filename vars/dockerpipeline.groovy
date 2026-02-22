@@ -50,7 +50,7 @@ def call(Map pipelineParams){
     }
     tools{
         maven 'Maven-3.8.9'
-        jdk 'JDK-21'
+        jdk 'JDK-17'
     }
     environment{
         APPLICATION_NAME = "${pipelineParams.appName}"
